@@ -10,8 +10,8 @@ class ColorPickerException(Exception):
 
 class ColorPickerWidget(forms.TextInput):
     class Media:
-        css = {'all': ('%scss/colorpicker.css' % settings.COLORS_STATIC_URL)}
-        js = ('%sjs/colorpicker.js' % settings.COLORS_STATIC_URL,)
+        css = {'all': ['%scss/colorpicker.css' % settings.COLORS_STATIC_URL]}
+        js = ['%sjs/colorpicker.js' % settings.COLORS_STATIC_URL]
 
     def __init__(self, language=None, attrs=None):
         self.static_url = getattr(settings, 'COLORS_STATIC_URL', None)
