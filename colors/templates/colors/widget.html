@@ -14,9 +14,9 @@
                 $preview.find('div').css('backgroundColor', '#' + hex);
             },
             onBeforeShow: function(){ $(this).ColorPickerSetColor(this.value); }
-        }).bind('keyup', function(){ $(this).ColorPickerSetColor(this.value); });
+        }).bind('keyup', function(){ $(this).ColorPickerSetColor(this.value); }).css('width', '45px');
 
-        $preview.live('click', function(){
+        $preview.click(function(){
             $target.click();
         });
     });
