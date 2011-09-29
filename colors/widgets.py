@@ -12,15 +12,15 @@ class ColorPickerWidget(forms.TextInput):
     class Media:
         css = {
             'all': (
-                '%scss/colorpicker.css' % settings.COLOR_STATIC_URL,
+                '%scss/colorpicker.css' % settings.COLORS_STATIC_URL,
             )
         }
         js = (
-            '%sjs/colorpicker.js' % settings.COLOR_STATIC_URL,
+            '%sjs/colorpicker.js' % settings.COLORS_STATIC_URL,
         )
 
     def __init__(self, language=None, attrs=None):
-        self.static_url = getattr(settings, 'COLOR_STATIC_URL', None)
+        self.static_url = getattr(settings, 'COLORS_STATIC_URL', None)
         if not self.static_url:
             raise ColorPickerException('You must define COLOR_STATIC_URL in your settings.py')
         self.language = language or settings.LANGUAGE_CODE[:2]
