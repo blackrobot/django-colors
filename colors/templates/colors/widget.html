@@ -2,17 +2,23 @@
 (function($){
     $(function(){
         var $target = $('#id_{{ name }}'),
-            $preview = $('<div class="color-picker-preview"><div style="background-color:#{{ value }}"></div></div>').insertAfter($target);
+            $preview = $('<div class="color-picker-preview"><div style="background-color:#{{ value }}"></div></div>');
+
+        $preview.insertAfter($target);
 
         $target.ColorPicker({
             color: '{{ value }}',
             onSubmit: function(hsb, hex, rgb, el){
                 $(el).val(hex);
                 $(el).ColorPickerHide();
-                $(preview).find('div').css('backgroundColor', '#' + hex);
+                $preview.find('div').css('backgroundColor', '#' + hex);
             },
             onBeforeShow: function(){ $(this).ColorPickerSetColor(this.value); }
         }).bind('keyup', function(){ $(this).ColorPickerSetColor(this.value); });
+
+        $preview.live('click', function(){
+            $target.click();
+        });
     });
 })(django.jQuery);
 </script>
