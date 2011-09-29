@@ -3,30 +3,31 @@
 from django import forms
 from django.conf import settings
 from django.utils.safestring import mark_safe
+from django.template.loader import render_to_string
+
+class ColorPickerException(Exception):
+    pass
 
 class ColorPickerWidget(forms.TextInput):
     class Media:
         css = {
             'all': (
-                settings.MEDIA_URL + 'colors/css/colorpicker.css',
+                '%scss/colorpicker.css' % settings.COLOR_STATIC_URL,
             )
         }
         js = (
-            settings.MEDIA_URL + 'colors/js/colorpicker.js',
+            '%sjs/colorpicker.js' % settings.COLOR_STATIC_URL,
         )
 
     def __init__(self, language=None, attrs=None):
+        self.static_url = getattr(settings, 'COLOR_STATIC_URL', None)
+        if not self.static_url:
+            raise ColorPickerException('You must define COLOR_STATIC_URL in your settings.py')
         self.language = language or settings.LANGUAGE_CODE[:2]
         super(ColorPickerWidget, self).__init__(attrs=attrs)
 
     def render(self, name, value, attrs=None):
         rendered = super(ColorPickerWidget, self).render(name, value, attrs)
-        return rendered + mark_safe(u"""<script type="text/javascript">(function($){
-$(function(){
-    var preview = $('<div class="color-picker-preview"><div style="background-color:#%s"></div></div>').insertAfter('#id_%s');
-    $('#id_%s').ColorPicker({
-        color: '%s',
-        onSubmit: function(hsb, hex, rgb, el) { $(el).val(hex); $(el).ColorPickerHide();$(preview).find('div').css('backgroundColor', '#' + hex); },
-        onBeforeShow: function () { $(this).ColorPickerSetColor(this.value); }
-    }).bind('keyup', function(){ $(this).ColorPickerSetColor(this.value); });
-});})(django.jQuery);</script>""" % (value, name, name, value))
+        return "%s%s" % (rendered, mark_safe(render_to_string('colors/widget.html', {
+            'value': value, 'name': name,
+        })))

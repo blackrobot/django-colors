@@ -53,3 +53,6 @@ Django setup
    2. In your template load it using {% load colors %}
    3. That's it !
 
+
+This was forked to add support for a media path setting in settings.py.
+Add COLORS_STATIC_URL to your settings, and point it to your '/colors/' static directory.
