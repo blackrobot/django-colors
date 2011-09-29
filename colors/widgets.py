@@ -28,6 +28,6 @@ class ColorPickerWidget(forms.TextInput):
 
     def render(self, name, value, attrs=None):
         rendered = super(ColorPickerWidget, self).render(name, value, attrs)
-        return "%s%s" % (rendered, mark_safe(render_to_string('colors/widget.html', {
+        return mark_safe("%s%s" % (rendered, render_to_string('colors/widget.html', {
             'value': value, 'name': name,
         })))
